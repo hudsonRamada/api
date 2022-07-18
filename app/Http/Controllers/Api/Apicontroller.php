@@ -124,4 +124,23 @@ class Apicontroller extends Controller
         $recommendation->delete();
         return response()->json(null, 204);
     }
+
+    public function updateStatus($id)
+    {
+        $recommendation = Recommendation::find($id);
+        
+        switch ($recommendation->status) {
+            case 'pending':
+                $recommendation->status = 'processed';
+                break;
+            case 'processed':
+                $recommendation->status = 'approved';
+                break;
+            
+            default:
+                return response()->json(['error' => 'error on update status'], 401);
+                break;
+        }
+        return response()->json('success update status', 204);
+    }
 }
